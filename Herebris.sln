@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Server", "Server\Herebris.Server.fsproj", "{265E48B3-08EA-4EAE-85C1-0680471A1EB5}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Herebris.Client", "Client\Herebris.Client.fsproj", "{60913006-6F27-4F4E-9398-BC83BCF5C43A}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Herebris.Shared", "Shared\Herebris.Shared.fsproj", "{60913006-6F27-4F4E-9398-BC83BCF5C43A}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Herebris.Tests", "Tests\Herebris.Tests.fsproj", "{60913006-6F27-4F4E-9398-BC83BCF5C43A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{265E48B3-08EA-4EAE-85C1-0680471A1EB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{265E48B3-08EA-4EAE-85C1-0680471A1EB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{265E48B3-08EA-4EAE-85C1-0680471A1EB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{265E48B3-08EA-4EAE-85C1-0680471A1EB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60913006-6F27-4F4E-9398-BC83BCF5C43A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60913006-6F27-4F4E-9398-BC83BCF5C43A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60913006-6F27-4F4E-9398-BC83BCF5C43A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60913006-6F27-4F4E-9398-BC83BCF5C43A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FC748F2F-5E31-4CB6-B440-3BDED8995D40}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Name>Herebris</Name>
+    <ProjectGuid>{60913006-6f27-4f4e-9398-bc83bcf5c43a}</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Main.fs" />
+    <PackageReference Include="Fable.Core" Version="3.2.0" />
+    <PackageReference Include="Fable.Promise" Version="2.1.0" />
+    <PackageReference Include="Thoth.Json" Version="5.0.0" />
+  </ItemGroup>
+</Project>

@@ -1,6 +1,3 @@
-﻿namespace Herebris
+﻿module Herebris.Client
 
-open Fable.Core
-
-type Class1() =
-    member this.X = "F#"
+printfn "hello from the client"

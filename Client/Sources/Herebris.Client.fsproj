@@ -16,4 +16,9 @@
     <PackageReference Include="Feliz.Router" Version="3.3.0" />
     <PackageReference Include="Thoth.Json" Version="5.0.0" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="snowpack.config.js" />
+    <Folder Include="Web" />
+    <Folder Include="Sources" />
+  </ItemGroup>
 </Project>

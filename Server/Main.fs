@@ -1,9 +1,12 @@
-﻿module Herebris.Server
+﻿module Server
 
 open System
 open Fable.Core
 open Fable.Core.JsInterop
 open Pg
+open ServeServeStaticCore
+
+open Herebris.Express
 
 let config : Pg.ClientConfig =
     jsOptions<Pg.ClientConfig>(fun o ->
@@ -15,17 +18,40 @@ let config : Pg.ClientConfig =
 
 let client = Pg.defaults.Client.Create(config)
 
-let run () =
-    promise {
-        do! client.connect()
 
-        let! res = client.query<_, {| now: DateTime |}>("SELECT NOW()")
 
-        JS.console.log(res.rows)
-        JS.console.log(res.rows.[0])
-        printfn "%A" (res.rows.[0].now.ToUniversalTime())
+//let run (app : Application) =
+//    app.listen(float state.Port)
 
-        do! client.``end``()
-    }
+//let app = Express.express.Invoke()
+//
+//app.get("/hello",  fun req res next ->
+//    res.write("hello from the server")
+//    res.``end``()
+//)
+//
+//app.listen(3000.)
 
-run ()
+let mainRouter = router {
+    get "/hello" (fun req res next ->
+        res.write("hello from the server") |> ignore
+        res.``end``()
+    )
+    
+    get "/echo" (fun req res next ->
+        let value = unbox<string> req.query.["value"]
+        let text = sprintf "Echo: %s" value 
+        res.write(text) |> ignore
+        res.``end``()
+    )
+    
+    get "/errored" (fun req res next ->
+        next.Invoke(box "fake error")
+    )
+}
+
+let app = application {
+    use_router mainRouter
+}
+
+run app 3000

@@ -4,5 +4,8 @@
         file: 'dist/bundle.js',
         format: 'cjs'
     },
-    external: ['pg'] // <-- suppresses the warning
+    external: [
+        'pg',
+        'express'
+    ] // <-- suppresses the warning
 };

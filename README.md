@@ -27,4 +27,20 @@ Goal: Write an (small) excel online like to demonstrate how we can use Fable on 
         - [ ] Disable user
 - [ ] Sheet support
     - [ ] Todo list of basic feature for the sheets
-    
+
+## Notes
+
+Create a user `herebris_migration` with the role "Create Db" and a password.
+
+Execute migrations:
+
+```bash
+PGUSER=dbuser \
+  PGHOST=database.server.com \
+  PGPASSWORD=secretpassword \
+  PGDATABASE=mydb \
+  PGPORT=3211 \
+  node script.js
+```
+
+Tips: You can create an alias or a script named `migrate.sh` (it will not be tracked) for this command to avoid typing it all the time.

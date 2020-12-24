@@ -3,13 +3,15 @@
   "private": true,
   "version": "0.0.0",
   "description": "",
-  "main": "rollup.config.js",
   "scripts": {
     "build": "dotnet fable Herebris.Server.fsproj --outDir fableBuild && npx rollup -c",
-    "watch": "npx concurrently -n fable,rollup \"npm run watch-fable\" \"npm run watch-rollup\"",
-    "watch-fable": "dotnet fable Herebris.Server.fsproj --outDir fableBuild --watch",
-    "watch-rollup": "npx rollup -c -w",
-    "watch-nodemon": "npx nodemon dist/bunle.js"
+    "watch-server": "npx concurrently -n fable_server,rollup_server,nodemon \"npm run watch-server-fable\" \"npm run watch-server-rollup\" \"npm run watch-server-nodemon\"",
+    "watch-server-fable": "dotnet fable Sources/Herebris.Server.fsproj --outDir Sources/fableBuild --watch",
+    "watch-server-rollup": "npx rollup -c Sources/rollup.config.js -w",
+    "watch-server-nodemon": "npx nodemon Sources/dist/bundle.js --config nodemon.json",
+    "watch-tests": "npx concurrently -n fable_tests,mocha,server \"npm run watch-tests-fable\" \"npm run watch-tests-mocha\" \"npm run watch-server\"",
+    "watch-tests-fable": "dotnet fable Tests/Herebris.Tests.fsproj --outDir Tests/fableBuild --watch",
+    "watch-tests-mocha": "npx mocha Tests/dist/bundle.js -w"
   },
   "author": "Mangel Maxime <mangel.maxime@protonmail.com>",
   "license": "MIT",
@@ -18,7 +20,9 @@
   },
   "devDependencies": {
     "concurrently": "^5.3.0",
+    "esm": "^3.2.25",
     "express": "^4.17.1",
+    "mocha": "^6.2.0",
     "nodemon": "^2.0.6",
     "rollup": "^2.34.2"
   }

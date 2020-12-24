@@ -185,7 +185,8 @@ type [<AllowNullLiteral>] IRouter =
     abstract trace: IRouterMatcher<IRouter> with get, set
     abstract unlock: IRouterMatcher<IRouter> with get, set
     abstract unsubscribe: IRouterMatcher<IRouter> with get, set
-    abstract ``use``: obj with get, set
+    abstract ``use``: path : string * Func<Request, Response, NextFunction, unit> -> unit
+    abstract ``use``: handlers : Func<Request, Response, NextFunction, unit> -> unit
     abstract route: prefix: PathParams -> IRoute
     /// Stack of configured routes
     abstract stack: ResizeArray<obj option> with get, set

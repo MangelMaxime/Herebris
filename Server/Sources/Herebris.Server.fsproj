@@ -6,14 +6,14 @@
     <ProjectGuid>{60913006-6f27-4f4e-9398-bc83bcf5c43a}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Bindings\Qs.fs" />
-    <Compile Include="Bindings\RangeParser.fs" />
-    <Compile Include="Bindings\Pg.fs" />
-    <Compile Include="Bindings\Connect.fs" />
-    <Compile Include="Bindings\BodyParser.fs" />
-    <Compile Include="Bindings\ServeStatic.fs" />
-    <Compile Include="Bindings\ExpressServeStaticCore.fs" />
-    <Compile Include="Bindings\Express.fs" />
+    <Compile Include="..\..\Bindings\Qs.fs" />
+    <Compile Include="..\..\Bindings\RangeParser.fs" />
+    <Compile Include="..\..\Bindings\Pg.fs" />
+    <Compile Include="..\..\Bindings\Connect.fs" />
+    <Compile Include="..\..\Bindings\BodyParser.fs" />
+    <Compile Include="..\..\Bindings\ServeStatic.fs" />
+    <Compile Include="..\..\Bindings\ExpressServeStaticCore.fs" />
+    <Compile Include="..\..\Bindings\Express.fs" />
     <Compile Include="Express\Router.fs" />
     <Compile Include="Express\Application.fs" />
     <Compile Include="Main.fs" />
@@ -25,5 +25,6 @@
   <ItemGroup>
     <Content Include="nodemon.json" />
     <Content Include="rollup.config.js" />
+    <Folder Include="Sources" />
   </ItemGroup>
 </Project>

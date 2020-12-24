@@ -18,12 +18,17 @@ module Router =
         | Delete
         | Patch
 
-    type Handler = System.Func<Request, Response, System.Func<obj option, unit>, unit>
+    type HttpHandler = Request -> Response -> NextFunction -> unit
 
+    // TODO: Test if we need to change the builder to keep the order of declaration
+    // In Express, the order of declaration matter so perhaps that can cause some problem here
+    // The test can probably done with the permissions system to see how it can be hooked into the routing system
+        
     type RouterState =
         {
-            Routes : Dictionary<string * RouteType, Request -> Response -> NextFunction -> unit>
-            RoutesRegExp : Dictionary<RegExp * RouteType, Request -> Response -> NextFunction -> unit>
+            Routes : Dictionary<string * RouteType, HttpHandler>
+            RoutesRegExp : Dictionary<RegExp * RouteType, HttpHandler>
+            Pipelines : HttpHandler list
         }
      
     type RouteBuilder() =
@@ -32,6 +37,7 @@ module Router =
             {
                 Routes = Dictionary()
                 RoutesRegExp = Dictionary()
+                Pipelines = []
             }
             
         member __.Run(state : RouterState) =
@@ -62,6 +68,9 @@ module Router =
                     router.delete(path, System.Func<Request, Response, NextFunction, unit>(action))
                 | RouteType.Patch ->
                     router.patch(path, System.Func<Request, Response, NextFunction, unit>(action))
+              
+            for handler in state.Pipelines do
+                router.``use``(System.Func<Request, Response, NextFunction, unit>(handler))
               
             router
          
@@ -115,4 +124,22 @@ module Router =
             state.RoutesRegExp.[(path, RouteType.Patch)] <- action
             state
             
+        [<CustomOperation("pipe_through")>]
+        member __.PipeThrough(state : RouterState, pipeline : HttpHandler) =
+            { state with
+                Pipelines = pipeline :: state.Pipelines
+            }
+        
+//        [<CustomOperation("sub_router")>]
+//        member __.SubRouter(state : RouterState, x) =
+//            { state with
+//                
+//            }
+            
+//        [<CustomOperation("handler")>]
+//        member __.SubRouter(state : RouterState, x) =
+//            { state with
+//                
+//            }
+             
     let router = RouteBuilder()

@@ -1,7 +1,7 @@
 ﻿export default {
-    input: 'fableBuild/Main.js',
+    input: 'Sources/fableBuild/Main.js',
     output: {
-        file: 'dist/bundle.js',
+        file: 'Sources/dist/bundle.js',
         format: 'cjs'
     },
     external: [

@@ -7,3 +7,5 @@
 
 Server/dist/
 **/fableBuild/
+
+migrate.sh

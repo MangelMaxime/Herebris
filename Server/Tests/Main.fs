@@ -20,16 +20,14 @@ let arithmeticTests =
                 let answer = x * 2
                 Expect.equal 42 answer "async"
             }
-            
+
         testCasePromise "Test for promise" <|
             promise {
                 let! x = promise { return 21 }
                 let answer = x * 2
-                Expect.equal 42 answer "promise2"
+                Expect.equal 42 answer "promise"
             }
-            
+
     ]
 
-let res = Mocha.runTests arithmeticTests
-
-Node.Api.``process``.exit(res)
+Mocha.runTests arithmeticTests |> ignore

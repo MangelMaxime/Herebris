@@ -7,8 +7,6 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Herebris.Shared", "Shared\H
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Herebris.Client", "Client\Sources\Herebris.Client.fsproj", "{60913006-6F27-4F4E-9398-BC83BCF5C43A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{2AE0126F-771D-4584-AA8A-EBC4B6EA97F6}"
-EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Herebris.Server", "Server\Sources\Herebris.Server.fsproj", "{60913006-6F27-4F4E-9398-BC83BCF5C43A}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Herebris.Tests", "Server\Tests\Herebris.Tests.fsproj", "{60913006-6F27-4F4E-9398-BC83BCF5C43A}"
@@ -29,8 +27,5 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FC748F2F-5E31-4CB6-B440-3BDED8995D40}
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{60913006-6F27-4F4E-9398-BC83BCF5C43A} = {2AE0126F-771D-4584-AA8A-EBC4B6EA97F6}
 	EndGlobalSection
 EndGlobal

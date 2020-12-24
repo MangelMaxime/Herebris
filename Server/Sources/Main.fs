@@ -34,17 +34,17 @@ let client = Pg.defaults.Client.Create(config)
 
 let mainRouter = router {
     get "/hello" (fun req res next ->
-        res.write("hello from the server") |> ignore
+        res.write("hello from the serv2er") |> ignore
         res.``end``()
     )
-    
+
     get "/echo" (fun req res next ->
         let value = unbox<string> req.query.["value"]
-        let text = sprintf "Echo: %s" value 
+        let text = sprintf "Echo: %s" value
         res.write(text) |> ignore
         res.``end``()
     )
-    
+
     get "/errored" (fun req res next ->
         next.Invoke(box "fake error")
     )

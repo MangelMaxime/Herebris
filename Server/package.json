@@ -17,6 +17,7 @@
   "author": "Mangel Maxime <mangel.maxime@protonmail.com>",
   "license": "MIT",
   "dependencies": {
+    "cors": "^2.8.5",
     "pg": "^8.5.1"
   },
   "devDependencies": {

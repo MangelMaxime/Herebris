@@ -187,6 +187,7 @@ type [<AllowNullLiteral>] IRouter =
     abstract unsubscribe: IRouterMatcher<IRouter> with get, set
     abstract ``use``: path : string * Func<Request, Response, NextFunction, unit> -> unit
     abstract ``use``: handlers : Func<Request, Response, NextFunction, unit> -> unit
+    abstract ``use``: path : string * Router -> unit
     abstract route: prefix: PathParams -> IRoute
     /// Stack of configured routes
     abstract stack: ResizeArray<obj option> with get, set
@@ -914,7 +915,10 @@ type [<AllowNullLiteral>] Application =
     abstract routes: obj option with get, set
     /// Used to get all registered routes in Express Application
     abstract _router: obj option with get, set
-    abstract ``use``: ApplicationRequestHandler<Application> with get, set
+    // abstract ``use``: ApplicationRequestHandler<Application> with get, set
+    abstract ``use``: Router -> unit
+    abstract ``use``: path : string * ServeStatic.ServeStatic.RequestHandler<_> -> unit
+    abstract ``use``: ServeStatic.ServeStatic.RequestHandler<_> -> unit
     /// The mount event is fired on a sub-app, when it is mounted on a parent app.
     /// The parent app is passed to the callback function.
     ///

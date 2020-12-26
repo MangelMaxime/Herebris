@@ -5,30 +5,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "dotnet fable Herebris.Server.fsproj --outDir fableBuild && npx rollup -c",
-    "watch": "npx concurrently -n fable,rollup \"npm run watch-fable\" \"npm run watch-rollup\"",
-    "watch-client": "cd Client && snowpack dev",
-    "build-client-": "snowpack build",
-    "watch-server-fable": "dotnet fable Herebris.Server.fsproj --outDir fableBuild --watch",
-    "watch-server-rollup": "npx rollup -c -w",
-    "watch-server-nodemon": "npx nodemon dist/bunle.js"
+    "watch": "npx concurrently -n client,server \"npm run watch-client\" \"npm run watch-server\"",
+    "watch-client": "cd Client && npm run start",
+    "watch-server": "cd Server && npm run watch-server"
   },
   "author": "Mangel Maxime <mangel.maxime@protonmail.com>",
   "license": "MIT",
-  "dependencies": {
-    "pg": "^8.5.1",
-    "postgres-migrations": "^5.1.0",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "snowpack": "^2.18.5"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@snowpack/plugin-dotenv": "^2.0.5",
-    "@snowpack/plugin-react-refresh": "^2.3.9",
-    "@snowpack/web-test-runner-plugin": "^0.1.5",
-    "concurrently": "^5.3.0",
-    "express": "^4.17.1",
-    "nodemon": "^2.0.6",
-    "rollup": "^2.35.1"
+    "concurrently": "^5.3.0"
   }
 }

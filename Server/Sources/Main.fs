@@ -5,6 +5,7 @@ open Fable.Core
 open Fable.Core.JsInterop
 open Pg
 open ServeServeStaticCore
+open Thoth.Json
 
 open Herebris.Express
 
@@ -18,19 +19,12 @@ let config : Pg.ClientConfig =
 
 let client = Pg.defaults.Client.Create(config)
 
-
-
-//let run (app : Application) =
-//    app.listen(float state.Port)
-
-//let app = Express.express.Invoke()
-//
-//app.get("/hello",  fun req res next ->
-//    res.write("hello from the server")
-//    res.``end``()
-//)
-//
-//app.listen(3000.)
+let userRouter = router {
+    get "/index" (fun req res next ->
+        res.write("user index :)") |> ignore
+        res.``end``()
+    )
+}
 
 let mainRouter = router {
     get "/hello" (fun req res next ->
@@ -45,13 +39,45 @@ let mainRouter = router {
         res.``end``()
     )
 
+    get "/api/fake-data" (fun req res next ->
+        Encode.object [
+            "name", Encode.string "maxime"
+        ]
+        |> Encode.toString 4
+        |> res.write
+        |> ignore
+
+        res.``end``()
+    )
+
     get "/errored" (fun req res next ->
         next.Invoke(box "fake error")
     )
+
+    sub_router "/user" userRouter
 }
 
 let app = application {
+    use_cors (jsOptions<Cors.E.CorsOptions>(fun o ->
+        o.origin <- !^"http://localhost:8080"
+    ))
+
     use_router mainRouter
+
+    // When working on local dev env the static folder is serve using Snowpack
+    #if !LOCAL_DEV
+    use_static "static"
+    #endif
 }
 
+// app.``use``(mainRouter)
+
 run app 3000
+
+// let corsOptions = jsOptions<Cors.E.CorsOptions>(fun o ->
+//     o.origin <- Some !^"http://localhost:8080/"
+// )
+
+// let corsHandler : ServeStatic.ServeStatic.RequestHandler<Node.Http.ServerResponse> = Cors.e.Invoke()
+
+// app.``use``(corsHandler)

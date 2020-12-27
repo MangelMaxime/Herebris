@@ -1,3 +1,4 @@
+require('dotenv').config()
 var pgMigrations = require("postgres-migrations")
 
 async function run() {
@@ -11,7 +12,7 @@ async function run() {
 
     await pgMigrations.createDb(process.env.PGDATABASE, {
         ...dbConfig,
-        defaultDatabase: "postgres"
+        defaultDatabase: "herebris"
     });
 
     await pgMigrations.migrate(dbConfig, "./Migrations");

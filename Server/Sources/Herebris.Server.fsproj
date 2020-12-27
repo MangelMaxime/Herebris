@@ -33,6 +33,9 @@
         <Compile Include="..\..\Bindings\Express.fs">
           <Link>Bindings\Express.fs</Link>
         </Compile>
+        <Compile Include="Database\Database.Postgres.Types.fs" />
+        <Compile Include="Database\Database.fs" />
+        <Compile Include="Database\Database.User.fs" />
         <Compile Include="Express\Router.fs" />
         <Compile Include="Express\Application.fs" />
         <Compile Include="Main.fs" />

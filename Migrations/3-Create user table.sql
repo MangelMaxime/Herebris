@@ -4,7 +4,7 @@ CREATE TABLE hb."user" (
 	"password" varchar NOT NULL,
 	firstname varchar(250) NOT NULL,
 	surname varchar(250) NOT NULL,
-	is_active bool NOT NULL,
+	is_active bool NOT NULL DEFAULT true,
 	created_at timestamptz(0) NOT NULL DEFAULT now(),
 	reset_token varchar NULL,
 	password_change_required bool NOT NULL DEFAULT true,

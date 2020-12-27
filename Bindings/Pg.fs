@@ -23,22 +23,22 @@ module Pg =
         abstract Events: EventsStatic
 
     type [<AllowNullLiteral>] ClientConfig =
-        abstract user: string option with get, set
-        abstract database: string option with get, set
-        abstract password: U2<string, (unit -> U2<string, Promise<string>>)> option with get, set
-        abstract port: float option with get, set
-        abstract host: string option with get, set
-        abstract connectionString: string option with get, set
-        abstract keepAlive: bool option with get, set
+        abstract user: string with get, set
+        abstract database: string with get, set
+        abstract password: U2<string, (unit -> U2<string, Promise<string>>)> with get, set
+        abstract port: int with get, set
+        abstract host: string with get, set
+        abstract connectionString: string with get, set
+        abstract keepAlive: bool with get, set
 //        abstract stream: Stream.Duplex option with get, set
-        abstract statement_timeout: float option with get, set
-        abstract parseInputDatesAsUTC: bool option with get, set
-        abstract ssl: U2<bool, ConnectionOptions> option with get, set
-        abstract query_timeout: float option with get, set
-        abstract keepAliveInitialDelayMillis: float option with get, set
-        abstract idle_in_transaction_session_timeout: float option with get, set
-        abstract application_name: string option with get, set
-        abstract connectionTimeoutMillis: float option with get, set
+        abstract statement_timeout: int with get, set
+        abstract parseInputDatesAsUTC: bool with get, set
+        abstract ssl: U2<bool, ConnectionOptions> with get, set
+        abstract query_timeout: int with get, set
+        abstract keepAliveInitialDelayMillis: int with get, set
+        abstract idle_in_transaction_session_timeout: int with get, set
+        abstract application_name: string with get, set
+        abstract connectionTimeoutMillis: int with get, set
 
     type ConnectionConfig =
         ClientConfig
@@ -53,9 +53,9 @@ module Pg =
 
     type [<AllowNullLiteral>] PoolConfig =
         inherit ClientConfig
-        abstract max: float option with get, set
-        abstract min: float option with get, set
-        abstract idleTimeoutMillis: float option with get, set
+        abstract max: int with get, set
+        abstract min: int with get, set
+        abstract idleTimeoutMillis: int with get, set
         abstract log: (ResizeArray<obj option> -> unit) option with get, set
         abstract Promise: (*PromiseConstructorLike*) PromiseConstructor option with get, set
 
@@ -81,7 +81,7 @@ module Pg =
         abstract name: string with get, set
         abstract tableID: float with get, set
         abstract columnID: float with get, set
-        abstract dataTypeID: float with get, set
+        abstract dataTypeID: int with get, set
         abstract dataTypeSize: float with get, set
         abstract dataTypeModifier: float with get, set
         abstract format: string with get, set
@@ -169,7 +169,9 @@ module Pg =
         abstract query: queryStream: 'T -> 'T
         abstract query: queryConfig: QueryArrayConfig<'I> * ?values: 'I -> Promise<QueryArrayResult<'R>>
         abstract query: queryConfig: QueryConfig<'I> -> Promise<QueryResult<'R>>
-        abstract query: queryTextOrConfig: U2<string, QueryConfig<'I>> * ?values: 'I -> Promise<QueryResult<'R>>
+        // abstract query: queryTextOrConfig: U2<string, QueryConfig<'I>> * ?values: 'I -> Promise<QueryResult<'R>>
+        abstract query: queryText: string * ?values: 'I -> Promise<QueryResult<'R>>
+        abstract query: queryConfig: QueryConfig<'I> * ?values: 'I -> Promise<QueryResult<'R>>
         abstract query: queryConfig: QueryArrayConfig<'I> * callback: (Error -> QueryArrayResult<'R> -> unit) -> unit
         abstract query: queryTextOrConfig: U2<string, QueryConfig<'I>> * callback: (Error -> QueryResult<'R> -> unit) -> unit
         abstract query: queryText: string * values: 'I * callback: (Error -> QueryResult<'R> -> unit) -> unit

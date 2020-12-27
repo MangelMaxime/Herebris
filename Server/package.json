@@ -9,7 +9,7 @@
     "watch-server-fable": "dotnet fable Sources/Herebris.Server.fsproj --outDir Sources/fableBuild --watch",
     "watch-server-nodemon": "npx nodemon --watch Sources/fableBuild ",
     "//": "Start script is used by nodemon to restart the server when changes are detected. Using --exec didn't work",
-    "start": "node -r esm Sources/fableBuild/Main.js",
+    "start": "node -r dotenv/config -r esm Sources/fableBuild/Main.js dotenv_config_path=../.env",
     "watch-tests": "npx concurrently -n fable_tests,mocha,server \"npm run watch-tests-fable\" \"npm run watch-tests-mocha\" \"npm run watch-server\"",
     "watch-tests-fable": "dotnet fable Tests/Herebris.Tests.fsproj --outDir Tests/fableBuild --watch",
     "watch-tests-mocha": "npx mocha -r esm ./Tests/fableBuild/Main.js -w"
@@ -18,6 +18,7 @@
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "pg": "^8.5.1"
   },
   "devDependencies": {

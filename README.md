@@ -30,6 +30,9 @@ Goal: Write an (small) excel online like to demonstrate how we can use Fable on 
 
 ## Notes
 
+- Project to test SQL injections: https://github.com/sqlmapproject/sqlmap
+- Article about bulk insert with `node-postgresql`: https://www.wlaurance.com/2018/09/node-postgres-insert-multiple-rows
+
 Create a user `herebris_migration` with the role "Create Db" and a password.
 
 Execute migrations:

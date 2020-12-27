@@ -11,7 +11,10 @@
   },
   "author": "Mangel Maxime <mangel.maxime@protonmail.com>",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "postgres-migrations": "^5.1.0"
+  },
   "devDependencies": {
     "concurrently": "^5.3.0"
   }

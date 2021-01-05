@@ -2,6 +2,7 @@ module Page.Administration.Component
 
 open Elmish
 open Feliz
+open Fable.Core
 
 [<RequireQualifiedAccess>]
 type Page =
@@ -32,7 +33,20 @@ let init (route : Router.AdministrationUrl) =
         , Cmd.map UserIndexMsg userCmd
 
 let update (msg : Msg) (model : Model) =
-    model, Cmd.none
+    match msg, model.CurrentPage with
+    | UserIndexMsg subMsg, Page.UserIndex subModel ->
+        let newSubModel, subCmd = User.Index.Component.update subMsg subModel
+        { model with
+            CurrentPage = Page.UserIndex newSubModel
+        }
+        , Cmd.map UserIndexMsg subCmd
+
+    | discardedMsg , _ ->
+        JS.console.warn("Administration | message discarded: ", string discardedMsg)
+
+        model
+        , Cmd.none
+
 
 let view (model : Model) (dispatch : Dispatch<Msg>) =
     match model.CurrentPage with

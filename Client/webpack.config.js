@@ -8,7 +8,7 @@ console.log("Bundling for " + (isDevelopment ? "development" : "production") + "
 
 /** @type {import("webpack").Configuration } */
 module.exports = {
-    entry: './src/index.js',
+    entry: './src/fableBuild/Main.js',
     output: {
         path: path.join(__dirname, "dist"),
         // library: "require",
@@ -22,7 +22,14 @@ module.exports = {
     devServer: {
         hot: true,
         contentBase: path.join(__dirname, 'public'),
-        publicPath: "/"
+        publicPath: "/",
+        proxy: {
+            '/api/*': {
+                target: 'https://localhost:3000',
+                changeOrigin: true,
+                secure: false
+            }
+        }
     },
     module: {
         rules: [

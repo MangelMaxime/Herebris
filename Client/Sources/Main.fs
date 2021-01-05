@@ -2,7 +2,6 @@
 
 open Feliz
 open Feliz.Router
-open Feliz.UseElmish
 open Thoth.Json
 open Elmish
 open Fable.Core
@@ -10,21 +9,21 @@ open Fable.Core
 module Administration = Page.Administration.Component
 
 [<RequireQualifiedAccess>]
-type private Page =
+type Page =
     | Administration of Administration.Model
     | Loading
 
-type private Model =
+type Model =
     {
         CurrentRoute : Router.Url
         ActivePage : Page
     }
 
-type private Msg =
+type Msg =
     | RouteChanged of Router.Url
     | AdministrationMsg of Administration.Msg
 
-let private routeChanged (route : Router.Url) (model : Model) =
+let routeChanged (route : Router.Url) (model : Model) =
     let model =
         { model with
             CurrentRoute = route
@@ -50,12 +49,13 @@ let private routeChanged (route : Router.Url) (model : Model) =
         }
         , Cmd.map AdministrationMsg subCmd
 
-let private update (msg : Msg) (model : Model) =
+let update (msg : Msg) (model : Model) =
     match model.ActivePage, msg with
     | _, RouteChanged nextPage ->
         routeChanged nextPage model
 
     | Page.Administration subModel, AdministrationMsg subMsg ->
+        printfn "hijojo"
         let (newSubModel, subCmd) = Administration.update subMsg subModel
 
         { model with
@@ -69,7 +69,7 @@ let private update (msg : Msg) (model : Model) =
         model
         , Cmd.none
 
-let private init () =
+let init () =
     let initialModel =
         {
             CurrentRoute = Router.Url.Home
@@ -82,12 +82,9 @@ let private init () =
 
     routeChanged segments initialModel
 
-[<ReactComponent>]
-let App () =
-    let state, dispatch = React.useElmish(init, update, [||])
-
+let view (model : Model) (dispatch : Dispatch<Msg>) =
     let currentRoute =
-        match state.ActivePage with
+        match model.ActivePage with
         | Page.Loading ->
             Html.text "Loading..."
 
@@ -100,3 +97,13 @@ let App () =
         router.onUrlChanged (Router.parseUrl >> RouteChanged >> dispatch)
         router.children currentRoute
     ]
+
+open Elmish.React
+
+#if DEBUG
+open Elmish.HMR
+#endif
+
+Program.mkProgram init update view
+|> Program.withReactSynchronous "root"
+|> Program.run

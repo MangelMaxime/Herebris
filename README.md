@@ -58,14 +58,4 @@ Tips: You can create an alias or a script named `migrate.sh` (it will not be tra
 
 *Tested with webpack:*
 
-- For HMR / Fast Refresh, to work using a "pure" Elmish application there are several ways. By having a `[<ReactComponentt>]` at the root of the application which use `React.useElmish`
-    - 1. Add the following code to accept HMR support for all files
-
-    ```js
-    if (module.hot) {
-        module.hot.accept();
-    }
-    ```
-    - 2. Make all the functions private (except the one exposing the React component) in the `Main.fs` file it seems to make Fast Refresh works
-
-*All these "tricks" are here because Fast refresh plugin of webpack only accept reload of module exposing **only** React components*
+Fast Refresh doesn't play well with full Elmish application. The Elmish.HMR is still relevant.

@@ -9,3 +9,4 @@ Server/dist/
 **/fableBuild/
 
 migrate.sh
+**/.env

@@ -1,18 +1,53 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Name>Herebris</Name>
-    <ProjectGuid>{60913006-6f27-4f4e-9398-bc83bcf5c43a}</ProjectGuid>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="Fable.Mocha.Extensions.fs" />
-    <Compile Include="Main.fs" />
-    <Content Include="rollup.config.js" />
-    <PackageReference Include="Fable.Core" Version="3.2.0" />
-    <PackageReference Include="Fable.Mocha" Version="2.9.1" />
-    <PackageReference Include="Fable.Node" Version="1.2.0" />
-    <PackageReference Include="Fable.Promise" Version="2.1.0" />
-    <PackageReference Include="Thoth.Json" Version="5.0.0" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <Name>Herebris</Name>
+        <ProjectGuid>{60913006-6f27-4f4e-9398-bc83bcf5c43a}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="..\..\Bindings\Dotenv.fs">
+            <Link>Bindings\Dotenv.fs</Link>
+        </Compile>
+        <Compile Include="..\..\Bindings\Pg.fs">
+            <Link>Bindings\Pg.fs</Link>
+        </Compile>
+        <Compile Include="..\..\Bindings\Connect.fs">
+            <Link>Bindings\Connect.fs</Link>
+        </Compile>
+        <Compile Include="..\..\Bindings\RangeParser.fs">
+            <Link>Bindings\RangeParser.fs</Link>
+        </Compile>
+        <Compile Include="..\..\Bindings\Qs.fs">
+            <Link>Bindings\Qs.fs</Link>
+        </Compile>
+        <Compile Include="..\..\Bindings\BodyParser.fs">
+            <Link>Bindings\BodyParser.fs</Link>
+        </Compile>
+        <Compile Include="..\..\Bindings\ServeStatic.fs">
+            <Link>Bindings\ServeStatic.fs</Link>
+        </Compile>
+        <Compile Include="..\..\Bindings\ExpressServeStaticCore.fs">
+            <Link>Bindings\ExpressServeStaticCore.fs</Link>
+        </Compile>
+        <Compile Include="..\..\Bindings\Cors.fs">
+            <Link>Bindings\Cors.fs</Link>
+        </Compile>
+        <Compile Include="..\..\Bindings\Express.fs">
+            <Link>Bindings\Express.fs</Link>
+        </Compile>
+        <Compile Include="../Sources/Database/Database.Postgres.Types.fs" />
+        <Compile Include="../Sources/Database/Database.fs" />
+        <Compile Include="../Sources/Database/Database.User.fs" /> 
+        <Compile Include="Fable.Mocha.Extensions.fs" />
+        <Compile Include="Tests.Database.Sql.fs" />
+        <Compile Include="Tests.Database.User.fs" />
+        <Compile Include="Main.fs" />
+        <Content Include="rollup.config.js" />
+        <PackageReference Include="Fable.Core" Version="3.2.0" />
+        <PackageReference Include="Fable.Mocha" Version="2.9.1" />
+        <PackageReference Include="Fable.Node" Version="1.2.0" />
+        <PackageReference Include="Fable.Promise" Version="2.1.0" />
+        <PackageReference Include="Thoth.Json" Version="5.0.0" />
+    </ItemGroup>
 </Project>

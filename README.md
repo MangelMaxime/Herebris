@@ -47,3 +47,25 @@ PGUSER=dbuser \
 ```
 
 Tips: You can create an alias or a script named `migrate.sh` (it will not be tracked) for this command to avoid typing it all the time.
+
+### Things to explain
+
+- [ ] Module/namesapce organisation
+    - [ ] Delegation of the responsabilities
+- [ ] Router.fs structure and why/how to use it
+- [ ] How the build system works and why use simple package.json instead of Fake or stuff like that for now
+    - [ ] .env usage
+
+*Tested with webpack:*
+
+- For HMR / Fast Refresh, to work using a "pure" Elmish application there are several ways. By having a `[<ReactComponentt>]` at the root of the application which use `React.useElmish`
+    - 1. Add the following code to accept HMR support for all files
+
+    ```js
+    if (module.hot) {
+        module.hot.accept();
+    }
+    ```
+    - 2. Make all the functions private (except the one exposing the React component) in the `Main.fs` file it seems to make Fast Refresh works
+
+*All these "tricks" are here because Fast refresh plugin of webpack only accept reload of module exposing **only** React components*

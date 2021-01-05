@@ -12,7 +12,7 @@
     "start": "node -r dotenv/config -r esm Sources/fableBuild/Main.js dotenv_config_path=../.env",
     "watch-tests": "npx concurrently -n fable_tests,mocha,server \"npm run watch-tests-fable\" \"npm run watch-tests-mocha\" \"npm run watch-server\"",
     "watch-tests-fable": "dotnet fable Tests/Herebris.Tests.fsproj --outDir Tests/fableBuild --watch",
-    "watch-tests-mocha": "npx mocha -r esm ./Tests/fableBuild/Main.js -w"
+    "watch-tests-mocha": "npx mocha -r dotenv/config -r esm ./Tests/fableBuild/Main.js -w"
   },
   "author": "Mangel Maxime <mangel.maxime@protonmail.com>",
   "license": "MIT",

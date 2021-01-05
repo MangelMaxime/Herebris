@@ -34,18 +34,25 @@ type SqlValue =
     | Bool of bool
     | Null
 
+
+/// <summary>
+/// Dummy type used to represent Sql value passed as parameters
+/// We use `unbox<SqlObjValue>`  because `unbox` is erased in Fable. When testing with `value :> SqlObjValue` where `type SqlObjValue = obj` we add problems in the send types
+///
+/// Also, not aliasing `obj` make it harder for the user to pass an incorrect value
+/// </summary>
+type SqlObjValue =
+    class end
+
 module Utils =
 
-    let sqlMap (value : 'a option) (f : 'a -> SqlValue) : SqlValue =
-        Option.defaultValue SqlValue.Null (Option.map f value)
-
+    let sqlMap (value : 'a option) (f : 'a -> SqlObjValue) : SqlObjValue =
+        Option.defaultValue (unbox<SqlObjValue> null) (Option.map f value)
 
 type ExecutionTarget =
     | Connection of Pg.Client
     | Pool of Pg.Pool
     // | Transaction of Pg
-
-type SqlObjValue = obj
 
 type SqlBuilder = private {
     ExecutionTarget: ExecutionTarget
@@ -63,7 +70,7 @@ type ReaderInfo (result : Pg.QueryResult) =
             columnDictionnary.Add(result.fields.[fieldIndex].name, fieldIndex)
             columnTypes.Add(result.fields.[fieldIndex].name, enum<Builtins>result.fields.[fieldIndex].dataTypeID)
 
-    member __.FailToRead (column : string, columnType : Builtins) =
+    member __.FailToRead (column : string, expectedType : string) =
         let availableColumns =
             columnDictionnary.Keys
             |> Seq.map (fun key ->
@@ -73,7 +80,7 @@ type ReaderInfo (result : Pg.QueryResult) =
 
         sprintf "Could not read column '%s' as %s. Available columns are %s"
             column
-            (builtinsGetNames columnType)
+            expectedType
             availableColumns
         |> UnknownColumnException
         |> raise
@@ -82,20 +89,48 @@ type ReaderInfo (result : Pg.QueryResult) =
 
     member __.Types = columnTypes
 
+// Data type documentation: https://www.postgresql.org/docs/9.5/datatype.html
+
+// Check if we should support TEXT for and try to parse the result
+// The idea is that it seems like if the expected type is unkown pg use TEXT oid by default
+
 type RowReader (o : obj, result : Pg.QueryResult, readerInfo : ReaderInfo) =
 
-    member this.int (column : string) =
+    member __.bool (column : string) =
+        match readerInfo.Names.TryGetValue column with
+        | true, columnIndex ->
+            match enum<Builtins> result.fields.[columnIndex].dataTypeID with
+            | Builtins.BOOL ->
+                unbox<bool> o?(column)
+            | _ ->
+                readerInfo.FailToRead(column, "bool")
+        | false, _ -> readerInfo.FailToRead(column, "bool")
+
+    member __.boolOrNone (column : string) =
+        match readerInfo.Names.TryGetValue column with
+        | true, columnIndex ->
+            match enum<Builtins> result.fields.[columnIndex].dataTypeID with
+            | Builtins.BOOL ->
+                let value = o?(column)
+                if isNull value then
+                    None
+                else
+                    unbox<bool> value |> Some
+            | _ ->
+                readerInfo.FailToRead(column, "bool")
+        | false, _ -> readerInfo.FailToRead(column, "bool")
+
+    member __.int (column : string) =
         match readerInfo.Names.TryGetValue column with
         | true, columnIndex ->
             match enum<Builtins> result.fields.[columnIndex].dataTypeID with
             | Builtins.INT4 ->
-                fun o ->
-                    o?(column) |> int
+                o?(column) |> int
             | _ ->
-                readerInfo.FailToRead(column, Builtins.INT4)
-        | false, _ -> readerInfo.FailToRead(column, Builtins.INT4)
+                readerInfo.FailToRead(column, "int")
+        | false, _ -> readerInfo.FailToRead(column, "int")
 
-    member this.string (column : string) =
+    member __.string (column : string) =
         match readerInfo.Names.TryGetValue column with
         | true, columnIndex ->
             match enum<Builtins> result.fields.[columnIndex].dataTypeID with
@@ -103,24 +138,76 @@ type RowReader (o : obj, result : Pg.QueryResult, readerInfo : ReaderInfo) =
             | Builtins.VARCHAR ->
                 o?(column) |> string
             | _ ->
-                readerInfo.FailToRead(column, Builtins.INT4)
-        | false, _ -> readerInfo.FailToRead(column, Builtins.INT4)
+                readerInfo.FailToRead(column, "string")
+        | false, _ -> readerInfo.FailToRead(column, "string")
 
-    member this.uuid (column : string) =
+    member __.stringOrNone (column : string) =
+        match readerInfo.Names.TryGetValue column with
+        | true, columnIndex ->
+            match enum<Builtins> result.fields.[columnIndex].dataTypeID with
+            | Builtins.TEXT
+            | Builtins.VARCHAR ->
+                let value = o?(column)
+                if isNull value then
+                    None
+                else
+                    value |> string |> Some
+            | _ ->
+                readerInfo.FailToRead(column, "string")
+        | false, _ -> readerInfo.FailToRead(column, "string")
+
+    member __.uuid (column : string) =
         match readerInfo.Names.TryGetValue column with
         | true, columnIndex ->
             match enum<Builtins> result.fields.[columnIndex].dataTypeID with
             | Builtins.UUID ->
                 o?(column) |> string |> System.Guid
             | _ ->
-                readerInfo.FailToRead(column, Builtins.UUID)
-        | false, _ -> readerInfo.FailToRead(column, Builtins.UUID)
+                readerInfo.FailToRead(column, "uuid")
+        | false, _ -> readerInfo.FailToRead(column, "uuid")
+
+    member __.float (column : string) =
+        match readerInfo.Names.TryGetValue column with
+        | true, columnIndex ->
+            match enum<Builtins> result.fields.[columnIndex].dataTypeID with
+            | Builtins.FLOAT4 ->
+                o?(column) |> float
+            | _ ->
+                readerInfo.FailToRead(column, "float")
+        | false, _ -> readerInfo.FailToRead(column, "float")
+
+    member __.decimal (column : string) =
+        match readerInfo.Names.TryGetValue column with
+        | true, columnIndex ->
+            match enum<Builtins> result.fields.[columnIndex].dataTypeID with
+            | Builtins.FLOAT8 ->
+                o?(column) |> decimal
+            | _ ->
+                readerInfo.FailToRead(column, "decimal")
+        | false, _ -> readerInfo.FailToRead(column, "decimal")
+
+    member __.datetime (column : string) =
+        match readerInfo.Names.TryGetValue column with
+        | true, columnIndex ->
+            match enum<Builtins> result.fields.[columnIndex].dataTypeID with
+            | Builtins.TIMESTAMPTZ ->
+                // Fable DateTime is using Date for the runtime representation
+                o?(column) |> unbox<DateTime>
+            | _ ->
+                readerInfo.FailToRead(column, "datetime")
+        | false, _ -> readerInfo.FailToRead(column, "datetime")
 
 [<RequireQualifiedAccess>]
 module Sql =
-    let int (value : int) = SqlValue.Int value
-    let intOrNone (value : int option) = Utils.sqlMap value int
-    let string (value : string) = value :> SqlObjValue
+    let nil = unbox<SqlObjValue> null
+    let bool (value : bool) = value |> unbox<SqlObjValue>
+    let boolOrNone (value : bool option) = Utils.sqlMap value bool
+    let int (value : int) = value |> unbox<SqlObjValue>
+    // let intOrNone (value : int option) = Utils.sqlMap value int
+    let float (value : float) = value |> unbox<SqlObjValue>
+    let decimal (value : decimal) = value.ToString() |> unbox<SqlObjValue>
+    let datetime (value : DateTime) = value |> unbox<SqlObjValue>
+    let string (value : string) = value |> unbox<SqlObjValue>
     // let stringOrNone (value : string option) = Utils.sqlMap value string
 
     let beginTransaction () =
@@ -165,11 +252,48 @@ module Sql =
                 return
                     res.rows
                     |> Seq.map (fun row ->
-                        JS.console.log(row)
                         let reader = RowReader(row, res, readerInfo)
                         read reader
                     )
                     |> Seq.toList
+            | _ ->
+                return failwith "Not implemented"
+        }
+
+    let executeNonQuery (sqlBuilder : SqlBuilder) : JS.Promise<unit> =
+        promise {
+            if String.IsNullOrEmpty sqlBuilder.SqlQuery then
+                raise (MissingQueryException "No query provided. Please use Sql.query")
+
+            match sqlBuilder.ExecutionTarget with
+            | Pool pool ->
+                let! (res : Pg.QueryResult<obj>) = pool.query(sqlBuilder.SqlQuery, sqlBuilder.Parameters |> List.toArray)
+                return ()
+            | _ ->
+                return failwith "Not implemented"
+        }
+
+    let executeRow (read : RowReader -> 'Value) (sqlBuilder : SqlBuilder) : JS.Promise<'Value> =
+        promise {
+            if String.IsNullOrEmpty sqlBuilder.SqlQuery then
+                raise (MissingQueryException "No query provided. Please use Sql.query")
+
+            match sqlBuilder.ExecutionTarget with
+            | Pool pool ->
+                let! (res : Pg.QueryResult<obj>) = pool.query(sqlBuilder.SqlQuery, sqlBuilder.Parameters |> List.toArray)
+                // let mutable i = -1
+                // let arr = Array.zeroCreate tokens.Length
+                // let row = res.rows.[0]
+
+                let readerInfo = ReaderInfo(res)
+
+                JS.console.log(res)
+
+                if res.rowCount < 1 then
+                    failwith "Expected at least one row to be returned. Instead got an empty result"
+
+                let reader = RowReader(res.rows.[0], res, readerInfo)
+                return read reader
             | _ ->
                 return failwith "Not implemented"
         }

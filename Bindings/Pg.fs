@@ -88,7 +88,7 @@ module Pg =
 
     type [<AllowNullLiteral>] QueryResultBase =
         abstract command: string with get, set
-        abstract rowCount: float with get, set
+        abstract rowCount: int with get, set
         abstract oid: float with get, set
         abstract fields: ResizeArray<FieldDef> with get, set
 

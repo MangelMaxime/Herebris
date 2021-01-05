@@ -154,7 +154,7 @@ select * from hb."user";
     }
 
 // run()
-run2()
+// run2()
 
 // printfn "%A" Database.Env.Db.user
 // printfn "%A" Database.Env.Db.password

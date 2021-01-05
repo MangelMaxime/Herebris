@@ -7,11 +7,11 @@ module.exports = {
     plugins: [
         '@snowpack/plugin-react-refresh',
         '@snowpack/plugin-dotenv',
-        ['@snowpack/plugin-run-script', {
-            "cmd": "dotnet fable Sources/Herebris.Client.fsproj --outDir ./src/fableBuild",
-            "watch": "dotnet fable watch Sources/Herebris.Client.fsproj --outDir ./src/fableBuild",
-            "output": "stream"
-        }]
+        // ['@snowpack/plugin-run-script', {
+        //     "cmd": "dotnet fable Sources/Herebris.Client.fsproj --outDir ./src/fableBuild",
+        //     "watch": "dotnet fable watch Sources/Herebris.Client.fsproj --outDir ./src/fableBuild",
+        //     "output": "stream"
+        // }]
 
     ],
     install: [
@@ -22,7 +22,7 @@ module.exports = {
     },
     devOptions: {
         /* ... */
-        output: "stream"
+        // output: "stream"
     },
     buildOptions: {
         /*  */

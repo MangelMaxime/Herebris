@@ -1,4 +1,4 @@
-namespace Herebris.Express
+namespace Jupiter
 
 [<AutoOpen>]
 module Application =

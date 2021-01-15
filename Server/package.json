@@ -5,9 +5,9 @@
   "description": "",
   "scripts": {
     "build": "dotnet fable Herebris.Server.fsproj --outDir fableBuild && npx rollup -c",
-    "watch-server": "npx concurrently -n fable_server,nodemon \"npm run watch-server-fable\" \"npm run watch-server-nodemon\"",
-    "watch-server-fable": "dotnet fable Sources/Herebris.Server.fsproj --outDir Sources/fableBuild --watch",
-    "watch-server-nodemon": "npx nodemon --watch Sources/fableBuild ",
+    "watch": "npx concurrently -n fable_server,nodemon \"npm run watch-fable\" \"npm run watch-nodemon\"",
+    "watch-fable": "dotnet fable Sources/Herebris.Server.fsproj --outDir Sources/fableBuild --watch",
+    "watch-nodemon": "npx nodemon --watch Sources/fableBuild ",
     "//": "Start script is used by nodemon to restart the server when changes are detected. Using --exec didn't work",
     "start": "node -r dotenv/config -r esm Sources/fableBuild/Main.js dotenv_config_path=../.env",
     "watch-tests": "npx concurrently -n fable_tests,mocha,server \"npm run watch-tests-fable\" \"npm run watch-tests-mocha\" \"npm run watch-server\"",

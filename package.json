@@ -6,8 +6,8 @@
   "main": "index.js",
   "scripts": {
     "watch": "npx concurrently -n client,server \"npm run watch-client\" \"npm run watch-server\"",
-    "watch-client": "cd Client && npm run start",
-    "watch-server": "cd Server && npm run watch-server"
+    "watch-client": "cd Client && npm run watch",
+    "watch-server": "cd Server && npm run watch"
   },
   "author": "Mangel Maxime <mangel.maxime@protonmail.com>",
   "license": "MIT",

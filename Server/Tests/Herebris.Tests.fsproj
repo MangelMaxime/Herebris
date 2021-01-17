@@ -36,6 +36,21 @@
         <Compile Include="..\..\Bindings\Express.fs">
             <Link>Bindings\Express.fs</Link>
         </Compile>
+        <Compile Include="..\..\Bindings\Spex.fs">
+            <Link>Bindings\Spex.fs</Link>
+          </Compile>
+        <Compile Include="..\..\Bindings\PgSubset.fs">
+            <Link>Bindings\PgSubset.fs</Link>
+        </Compile>
+        <Compile Include="..\..\Bindings\PgMinify.fs">
+            <Link>Bindings\PgMinify.fs</Link>
+        </Compile>
+        <Compile Include="..\..\Bindings\PgPromise.fs">
+            <Link>Bindings\PgPromise.fs</Link>
+          </Compile>
+        <Compile Include="..\..\Bindings\PgMonitor.fs">
+            <Link>Bindings\PgMonitor.fs</Link>
+          </Compile>
         <Compile Include="../Sources/Database/Database.Postgres.Types.fs" />
         <Compile Include="../Sources/Database/Database.fs" />
         <Compile Include="../Sources/Database/Database.User.fs" /> 

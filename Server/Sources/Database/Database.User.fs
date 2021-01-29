@@ -153,3 +153,13 @@ select * from hb."user"
 //                     } : User
 //                 )
         }
+
+
+    open Node
+
+    let testQueryFile () =
+        printfn "%A"__dirname
+
+    // let x = PgPromise.pgPromise.QueryFile()
+
+    // x

@@ -221,10 +221,10 @@ module Sql =
             Value = Some parameter
         }
 
-    // type QueryResultError(message : string) =
-    //     inherit Exception(message)
+    type QueryResultError(message : string) =
+        inherit Exception(message)
 
-    exception QueryResultError of string
+    // exception QueryResultError of string
 
     let executeMany (read : RowReader -> 'Value) (builder : SqlBuilder<_>) : JS.Promise<'Value list> =
         promise {

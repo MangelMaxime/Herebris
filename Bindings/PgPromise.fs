@@ -14,7 +14,7 @@ type Array<'T> = System.Collections.Generic.IList<'T>
 type Error = System.Exception
 type Symbol = obj
 
-let [<Import("*","pg-promise")>] pgPromise: PgPromise.IExports = jsNative
+let [<Import("default","pg-promise")>] pgPromise: PgPromise.IExports = jsNative
 
 type [<AllowNullLiteral>] IExports =
     [<Emit("$0($1)")>]
@@ -35,8 +35,9 @@ module PgPromise =
         abstract minify: obj
         abstract PreparedStatement: PreparedStatementStatic
         abstract ParameterizedQuery: ParameterizedQueryStatic
-        abstract QueryFile: QueryFileStatic
-        abstract PromiseAdapter: PromiseAdapterStatic
+        // abstract QueryFile: QueryFileStatic
+        [<Emit("new $0.QueryFile($1...)")>]
+        abstract QueryFile: file: string * ?options: IQueryFileOptions -> QueryFile
         abstract txMode: ITXMode
         abstract utils: IUtils
         abstract ``as``: IFormatting

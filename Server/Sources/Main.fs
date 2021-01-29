@@ -175,11 +175,31 @@ let user =
             printfn "%A" user
         )
         |> Promise.catchEnd (fun error ->
-            try
-                raise error
-            with
-                | Sql.QueryResultError msg ->
-                    printfn "dz dzdz: %A" msg
-                | _ ->
-                    printfn "other"
+
+            printfn "%A" error.Message
+
+            // try
+            //     raise error
+            // with
+            //     | Sql.QueryResultError msg ->
+            //         printfn "dz dzdz: %A" msg
+            //     | _ ->
+            //         printfn "other"
         )
+
+open PgPromise
+
+promise {
+    let path = path.join(__dirname, "../Sql/test.sql")
+    let options = jsOptions<PgPromise.IQueryFileOptions>(fun o ->
+        o.debug <- Some true
+    )
+    let file = pgPromise.QueryFile(path, options)
+
+    JS.console.log(file.file)
+    JS.console.log(file.error)
+
+    ()
+}
+
+|> ignore
